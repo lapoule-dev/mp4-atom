@@ -190,6 +190,8 @@ fn mebx() {
                                         taic: None,
                                         fiel: None,
                                         ccst: None,
+                                        vexu: None,
+                                        hfov: None,
                                     }
                                     .into()],
                                 },

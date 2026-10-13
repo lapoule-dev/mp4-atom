@@ -13,6 +13,9 @@ pub struct Hvc1 {
     pub taic: Option<Taic>,
     pub fiel: Option<Fiel>,
     pub ccst: Option<Ccst>,
+    /// Apple's stereo video boxes, for a spatial (MV-HEVC) track.
+    pub vexu: Option<Vexu>,
+    pub hfov: Option<Hfov>,
 }
 
 impl Atom for Hvc1 {
@@ -29,6 +32,8 @@ impl Atom for Hvc1 {
         let mut taic = None;
         let mut fiel = None;
         let mut ccst = None;
+        let mut vexu = None;
+        let mut hfov = None;
         while let Some(atom) = Any::decode_maybe(buf)? {
             match atom {
                 Any::Hvcc(atom) => hvcc = atom.into(),
@@ -39,6 +44,8 @@ impl Atom for Hvc1 {
                 Any::Taic(atom) => taic = atom.into(),
                 Any::Fiel(atom) => fiel = atom.into(),
                 Any::Ccst(atom) => ccst = atom.into(),
+                Any::Vexu(atom) => vexu = atom.into(),
+                Any::Hfov(atom) => hfov = atom.into(),
                 unknown => Self::decode_unknown(&unknown)?,
             }
         }
@@ -54,6 +61,8 @@ impl Atom for Hvc1 {
             taic,
             fiel,
             ccst,
+            vexu,
+            hfov,
         })
     }
 
@@ -67,6 +76,8 @@ impl Atom for Hvc1 {
         self.taic.encode(buf)?;
         self.fiel.encode(buf)?;
         self.ccst.encode(buf)?;
+        self.vexu.encode(buf)?;
+        self.hfov.encode(buf)?;
         Ok(())
     }
 }
